@@ -47,7 +47,7 @@ def create_pie_chart(column, context):
             colors=('#f5c6cb', '#ffeeba'))
     ax.axis('equal')
     ax.set_title(column.replace('_', ' ').title())
-    filename = Path.joinpath(Path.cwd(), f'budget/static/{column}.png')
+    filename = Path.joinpath(Path.cwd(), f'sqlite_budget/budget/static/{column}.png')
     plt.savefig(fname=filename, dpi=100)
 
 
@@ -224,12 +224,6 @@ def budget_visuals(request):
     context = create_context(request)
     if request.method == "GET":
         for column in context['budget_columns']:
-            try:
-                create_pie_chart(column, context)
-            except FileNotFoundError:
-                filename = Path.joinpath(Path.cwd(), f'budget/static/{column}.png')
-                with open(filename, 'w') as file:
-                    pass
-                create_pie_chart(column, context)
+            create_pie_chart(column, context)
     return render(request, 'matplotlib.html', context=context)
 
