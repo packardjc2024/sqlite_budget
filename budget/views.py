@@ -224,11 +224,12 @@ def budget_visuals(request):
     context = create_context(request)
     if request.method == "GET":
         for column in context['budget_columns']:
-            create_pie_chart(column, context)
+            try:
+                create_pie_chart(column, context)
+            except FileNotFoundError:
+                filename = Path.joinpath(Path.cwd(), f'budget/static/{column}.png')
+                with open(filename, 'w') as file:
+                    pass
+                create_pie_chart(column, context)
     return render(request, 'matplotlib.html', context=context)
 
-
-### login/authentication
-### put in docker
-### use sqlite and publish on pages
-#### manually create models and forms using sql
