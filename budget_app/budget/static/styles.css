@@ -1,0 +1,22 @@
+.hidden_popup {
+  visibility:hidden;
+}
+
+.popup {
+  font-weight: bold;
+  position:fixed;
+  left:0;
+  right:0;
+  margin: auto;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 30%;
+  height: auto;
+  padding: 15px;  
+  background: grey;
+  text-align: center;
+  box-sizing: content-box;
+  border: 4px black;
+}

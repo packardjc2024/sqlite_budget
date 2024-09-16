@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% block extension %}
+
+{% if email_expenses %}
+{% for expense in email_expenses %}
+
+<form action="{% url 'add_email_expenses' %}" method="POST">
+    {% csrf_token %}
+    {{ expense }}
+
+{% endfor %}
+<input type="hidden" name="prefixes" value="{{ prefixes }}">
+<input type="submit">
+</form>
+
+{% else %}
+<h1>No expenses found</h1>
+{% endif %}
+
+{% endblock %}

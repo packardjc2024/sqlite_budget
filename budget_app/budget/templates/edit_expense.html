@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block extension %}
+
+<div class="container">
+<form class="expense_form" action="{% url 'edit_expense' id=expense_form.instance.id %}" method="POST">
+    {% csrf_token %}
+    {{ expense_form }}
+    <input type="submit">
+</form> 
+</div>
+
+{% endblock %}

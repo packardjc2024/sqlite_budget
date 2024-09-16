@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block visuals %}
+
+<div class="container">
+
+    {% for column in budget_columns %}
+    <img src="/static/{{ column }}.png?{% now 'U' %}">
+    {% endfor %}
+
+</div>
+
+{% endblock %}

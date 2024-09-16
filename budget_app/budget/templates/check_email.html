@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+{% block extension %}
+
+<h1 name="invalid_login">{{ invalid_login }}</h1>
+<form action="{% url 'check_email' %}" method="POST">
+    {% csrf_token %}
+    {{ email_form }}
+    <input type="submit">
+</form>
+
+{% endblock %}
