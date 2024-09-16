@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 import numpy
 from pathlib import Path
 
-from .email_checker.check_email import EmailChecker
+from .static.email_checker.check_email import EmailChecker
 
 #App wide functions and variables
 def create_context(request):
