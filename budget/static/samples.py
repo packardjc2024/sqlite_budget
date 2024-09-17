@@ -4,8 +4,8 @@ import random
 
 class Samples:
     def __init__(self):
-        self.expense = Expense.objects.order_by('id').last()
-        if not self.expense:
+        self.expense_id = Expense.objects.order_by('id').last().id
+        if not self.expense_id:
             self.expense_id = 1
         self.budgets = []
         for i in range(1, 13):
