@@ -9,7 +9,7 @@ class Samples:
             self.expense_id = 1
         self.budgets = []
         for i in range(1, 13):
-            self.budgets.append({"id": i, "budget_month": f"{i}/2024"})
+            self.budgets.append({"id": i, "budget_month": f"{i}-2024"})
         self.line_items = {column: 200 for column in Budget().table_columns() if column not in ('id', 'budget_month', 'Total')}
 
     def create_budget_samples(self):
@@ -34,7 +34,7 @@ class Samples:
                 self.expense_id += 1
                 Expense(**expense).save()
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     samples = Samples()
     samples.create_budget_samples()
     samples.create_expense_samples()
