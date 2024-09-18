@@ -10,16 +10,15 @@ class EmailChecker:
     def __init__(self):
         self.expenses = []
 
-    def get_emails(self, username, password):
-        imap_obj = imapclient.IMAPClient('imap.mail.me.com', ssl=True)
+    def get_emails(self, password, username, client):
+        imap_obj = imapclient.IMAPClient(client, ssl=True)
         imap_obj.login(username=username, password=password)
 
         # Select the inbox mail folder
         imap_obj.select_folder('INBOX', readonly=True)
 
-        # Get the identifier of the emails from capital one
-        uids = imap_obj.search([['FROM', 'capitalone@notification.capitalone.com'],
-                               ['SUBJECT', 'A new transaction was charged to your account']])
+        uids = imap_obj.search([['FROM', username],  # Because I emailed myself as an example
+                        ['SUBJECT', 'Credit Card Example Testing']])
 
         for uid in uids:
             # Get the raw data from the email with a given identifier
@@ -46,16 +45,7 @@ class EmailChecker:
             merchant = merchant_regexp.search(body)
 
             self.expenses.append([amount.group(1), formatted_date, merchant.group(1)])
-            #self.expenses.append({'amount': amount.group(1), 'date': formatted_date, 'merchant': merchant.group(1)})
 
         # Log out of the icloud mail server
         imap_obj.logout()
         return self.expenses
-
-
-if __name__ == "__main__":
-    u = os.environ.get('imap_user')
-    p = os.environ.get('imap_password')
-    print(u, p)
-    check = EmailChecker().get_emails(u, p)
-    print(check)
