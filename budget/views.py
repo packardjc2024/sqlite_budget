@@ -14,7 +14,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from .static.email_checker.check_email import EmailChecker
-from ..budget_app.settings import STATIC_ROOT
 
 #App wide functions and variables
 def create_context(request):
@@ -49,7 +48,7 @@ def create_pie_chart(column, context):
             colors=('#f5c6cb', '#ffeeba'))
     ax.axis('equal')
     ax.set_title(column.replace('_', ' ').title())
-    filename = Path.joinpath(Path.cwd(), f'/home/packardjc/sqlite_budget/static/{column}.png')
+    filename = f'/home/packardjc/sqlite_budget/static/{column}.png'
     plt.savefig(fname=filename, dpi=100)
 
 ###############################################################################
