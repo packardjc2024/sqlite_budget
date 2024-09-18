@@ -37,7 +37,8 @@ def get_month_by_id(budget_id):
 
 def calc_percentages(pct, values):
     value = round(pct/100*sum(values), 2)
-    return f"{round(pct, 2)}%\n${value}"
+    # return f"{round(pct, 2)}%\n${value}"
+    return '{pct:.2f}%\n{value:.2f}%'.format(pct=pct, value=value)
 
 def create_pie_chart(column, context):
     matplotlib.use('agg')
