@@ -47,7 +47,7 @@ def create_pie_chart(column, context):
             colors=('#f5c6cb', '#ffeeba'))
     ax.axis('equal')
     ax.set_title(column.replace('_', ' ').title())
-    filename = Path.joinpath(Path.cwd(), f'/sqlite_budget/budget/static/{column}.png')
+    filename = Path.joinpath(Path.cwd(), f'/home/packardjc/sqlite_budget/budget/static/{column}.png')
     print(filename)
     plt.savefig(fname=filename, dpi=100)
 
