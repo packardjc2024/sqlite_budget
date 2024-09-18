@@ -11,6 +11,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 import numpy
 from pathlib import Path
+from dotenv import load_dotenv
 
 from .static.email_checker.check_email import EmailChecker
 
@@ -169,8 +170,9 @@ def check_email(request):
         email_form = EmailForm(request.POST)
         if email_form.is_valid():
             try:
-                email_expenses = EmailChecker().get_emails(email_form.cleaned_data['username'],
-                                                        email_form.cleaned_data['password'])
+                load_dotenv()
+                email_expenses = EmailChecker().get_emails(os.getenv('user'),
+                                                        os.getenv('password'))
                 context['email_expenses'] = []
                 context['prefixes'] = []
                 i = 1

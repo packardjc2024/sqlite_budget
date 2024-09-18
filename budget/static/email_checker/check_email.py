@@ -10,7 +10,7 @@ class EmailChecker:
     def __init__(self):
         self.expenses = []
 
-    def get_emails(self, password, username, client):
+    def get_emails(self, password, username, client='imap.gmail.com'):
         imap_obj = imapclient.IMAPClient(client, ssl=True)
         imap_obj.login(username=username, password=password)
 
