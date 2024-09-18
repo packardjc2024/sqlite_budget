@@ -34,6 +34,6 @@ class ExpenseForm(forms.ModelForm):
         self.fields['merchant'].widget.attrs['placeholder'] = 'Merchant...'
 
 class EmailForm(forms.Form):
-    username = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.EmailField(initial='example@example.com', disabled=True)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': "****"}), disabled=True, initial='*****')
 

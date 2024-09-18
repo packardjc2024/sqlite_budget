@@ -172,8 +172,8 @@ def check_email(request):
             try:
                 load_dotenv()
                 print(email_form.cleaned_data['password'])
-                email_expenses = EmailChecker().get_emails(username=email_form.cleaned_data['username'],
-                                                        password=email_form.cleaned_data['password'])
+                email_expenses = EmailChecker().get_emails(username=os.getenv('user'),
+                                                        password=os.getenv('password'))
                 context['email_expenses'] = []
                 context['prefixes'] = []
                 i = 1
