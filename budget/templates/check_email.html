@@ -1,6 +1,8 @@
 {% extends 'index.html' %}
 {% block extension %}
 
+<h5>This is uses an example email account with emails that are simulated to come from a credit card company. Just click "Submit."</h5>
+
 <h1 name="invalid_login">{{ invalid_login }}</h1>
 <form action="{% url 'check_email' %}" method="POST">
     {% csrf_token %}

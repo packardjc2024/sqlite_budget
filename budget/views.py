@@ -1,16 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 from .forms import *
 from .models import Budget, Expense
-import json
 import os
 import imapclient
 import matplotlib
 from matplotlib import pyplot as plt
-import numpy
-from pathlib import Path
 from dotenv import load_dotenv
 
 from .check_email import EmailChecker
@@ -18,7 +16,11 @@ from .check_email import EmailChecker
 #App wide functions and variables
 def create_context(request):
     if 'current_budget' not in request.session:
-        request.session['current_budget'] = datetime.now().strftime("%-m-%Y")
+        budget = Budget.objects.order_by('id').last()
+        if budget:
+            request.session['current_budget'] = budget.budget_month
+        else:
+            request.session['current_budget'] = datetime.now().strftime("%-m-%Y")
     budget = Budget.objects.get(budget_month=request.session['current_budget'])
     return {
          'current_budget': request.session['current_budget'],
@@ -56,6 +58,8 @@ def create_pie_chart(column, context):
 # Views
 def index(request):
     if request.method == "GET":
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('login_page'))
         try:
             context = create_context(request)
             return render(request, 'index.html', context=context)
@@ -183,7 +187,7 @@ def check_email(request):
                     context['email_expenses'].append(ExpenseForm(prefix=f"form{i}", initial={
                         'amount': expense[0],
                         'date': date.strftime("%Y-%m-%d"),
-                        'merchant': expense[2][:20],
+                        'merchant': expense[2][:20].lower(),
                     }))
                     context['prefixes'].append(i)
                     i += 1
@@ -231,6 +235,22 @@ def budget_visuals(request):
             create_pie_chart(column, context)
         return render(request, 'matplotlib.html', context=context)
 
-
-
-#### edit budget not working
+def login_page(request):
+    context = create_context(request)
+    if request.method == "GET":
+        context['login_form'] = LoginForm()
+        return render(request, 'login.html', context=context)
+    elif request.method == "POST":
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            username = request.POST["username"]
+            password = request.POST["password"]
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+        return render(request, 'login.html', context=context)
+        
+def logout_page(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))

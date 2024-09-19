@@ -37,3 +37,6 @@ class EmailForm(forms.Form):
     username = forms.EmailField(initial='example@example.com', disabled=True)
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': "****"}), disabled=True, initial='*****')
 
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
