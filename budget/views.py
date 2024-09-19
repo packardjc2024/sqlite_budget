@@ -15,12 +15,16 @@ from .check_email import EmailChecker
 
 #App wide functions and variables
 def create_context(request):
+    current_date = datetime.now().strftime("%-m-%Y")
     if 'current_budget' not in request.session:
-        budget = Budget.objects.order_by('id').last()
+        try:
+            budget = Budget.objects.get(budget_month=current_date)
+        except:
+            budget = Budget.objects.order_by('id').last()
         if budget:
             request.session['current_budget'] = budget.budget_month
         else:
-            request.session['current_budget'] = datetime.now().strftime("%-m-%Y")
+            request.session['current_budget'] = current_date
     budget = Budget.objects.get(budget_month=request.session['current_budget'])
     return {
          'current_budget': request.session['current_budget'],
