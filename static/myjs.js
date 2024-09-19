@@ -55,3 +55,13 @@ function showOptions(expense_id){
     document.getElementById('delete_form').action = `/budget/delete_expense/${expense_id}/`;
     document.getElementById('edit_form').action = `/budget/edit_expense/${expense_id}/`;
 }
+
+
+function disable_month(){
+    // if (window.location.pathname == test('/budget/edit_budget/.*')){
+    if (window.location.pathname == '/budget/edit_budget/'){
+        month = document.getElementById('id_budget_month');
+        month.readOnly = true;
+
+    }
+}

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from datetime import datetime
-from .forms import ExpenseForm, MonthForm, BudgetForm, EmailForm
+from .forms import *
 from .models import Budget, Expense
 import json
 import os
@@ -131,11 +131,14 @@ def edit_budget(request, id):
     context = create_context(request)
     budget = Budget.objects.get(id=id)
     context['budget_form'] = BudgetForm(instance=budget)
-    context['budget_form'].fields['budget_month'].widget.attrs = {'readonly': True}
+    context['budget_form'].fields['budget_month'].disabled = True
     if request.method == 'GET':
         return render(request, 'edit_budget.html', context=context)
     elif request.method == "POST":
-        form = BudgetForm(request.POST)
+        form = BudgetForm(request.POST, instance=budget)
+        data = {key: value[0] for key, value in dict(form.data).items()}
+        data.update({'budget_month': budget.budget_month})
+        form = BudgetForm(instance=budget, data=data)
         if form.is_valid():
             budget = form.save(commit=False)
             budget.id = id
@@ -168,9 +171,10 @@ def check_email(request):
         email_form = EmailForm(request.POST)
         if email_form.is_valid():
             try:
+                load_dotenv()
                 print(email_form.cleaned_data['password'])
-                email_expenses = EmailChecker().get_emails(username=os.environ.get('email_user'),
-                                                        password=os.environ.get('email_password'))
+                email_expenses = EmailChecker().get_emails(username=os.getenv('user'),
+                                                        password=os.getenv('password'))
                 context['email_expenses'] = []
                 context['prefixes'] = []
                 i = 1
