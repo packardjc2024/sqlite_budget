@@ -168,10 +168,9 @@ def check_email(request):
         email_form = EmailForm(request.POST)
         if email_form.is_valid():
             try:
-                load_dotenv()
                 print(email_form.cleaned_data['password'])
-                email_expenses = EmailChecker().get_emails(username=os.getenv('user'),
-                                                        password=os.getenv('password'))
+                email_expenses = EmailChecker().get_emails(username=os.environ.get('email_user'),
+                                                        password=os.environ.get('email_password'))
                 context['email_expenses'] = []
                 context['prefixes'] = []
                 i = 1
