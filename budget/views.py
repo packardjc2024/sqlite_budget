@@ -13,7 +13,7 @@ import numpy
 from pathlib import Path
 from dotenv import load_dotenv
 
-from .static.email_checker.check_email import EmailChecker
+from .check_email import EmailChecker
 
 #App wide functions and variables
 def create_context(request):
@@ -131,13 +131,11 @@ def edit_budget(request, id):
     context = create_context(request)
     budget = Budget.objects.get(id=id)
     context['budget_form'] = BudgetForm(instance=budget)
-    context['budget_form'].fields['budget_month'].disabled = True
+    context['budget_form'].fields['budget_month'].widget.attrs = {'readonly': True}
     if request.method == 'GET':
         return render(request, 'edit_budget.html', context=context)
     elif request.method == "POST":
         form = BudgetForm(request.POST)
-        form.budget_month = budget.budget_month
-        print(form.__dict__)
         if form.is_valid():
             budget = form.save(commit=False)
             budget.id = id
